@@ -37,19 +37,17 @@ local function fcomp_default( a,b )
 end
 
 local function getIndex(t, value, fcomp)
-   local fcomp = fcomp or fcomp_default
-
-   local iStart = 1;
-   local iEnd = #t;
+   local fcomp = fcomp or fcomp;
+   local iStart = t.first;
+   local iEnd = t.last;
    local iMid = 1;
    local iState = 0;
 
    while iStart <= iEnd do
       -- calculate middle
       iMid = floor( (iStart+iEnd)/2 );
-      
       -- compare
-      if fcomp( value,t[iMid] ) then
+      if fcomp( value, t[iMid] ) then --value = task, t[iMid] = queue[Mid](which is pointing to a task)
             iEnd = iMid - 1;
             iState = 0;
       else
@@ -63,8 +61,7 @@ end
 
 local function binsert(tbl, value, fcomp)
    local idx = getIndex(tbl, value, fcomp);
-   insert( tbl, idx, value);
-   
+   insert( tbl, idx, value );
    return idx;
 end
 

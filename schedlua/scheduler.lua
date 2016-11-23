@@ -98,21 +98,28 @@ end
 -- The 'params' is a table of parameters which will be passed to the function
 -- when it's ready to run.
 function Scheduler.scheduleTask(self, task, params, priority)
-	--print("Scheduler.scheduleTask: ", task, params)
+	--for k,v in pairs (task) do print(k,v) end
+	--for k, v in pairs(params) do print(k, v) end
 	params = params or {}
-	
+
+	--for k,v in pairs(task) do print(k,v); end
+
 	if not task then
 		return false, "no task specified"
 	end
 
 	task:setParams(params);
 	
-	if priority == 0 then
-		self.TasksReadyToRun:pushFront(task);	
+	if task.Priority == 0 then
+		self.TasksReadyToRun:pushFront(task);
+		--print("priority = 0 ", task.Priority)
 	else
-		self.TasksReadyToRun:enqueue(task);	
+		--print("did i get this far")
+		self.TasksReadyToRun:myenqueue(task);
+		--self.TasksReadyToRun:myenqueue(task);
+		
 	end
-
+	
 	task.state = "readytorun"
 
 	return task;

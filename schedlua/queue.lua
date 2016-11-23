@@ -1,6 +1,8 @@
 --[[
 	Queue
 --]]
+local tabutils = require("schedlua.tabutils")
+
 local Queue = {}
 setmetatable(Queue, {
 	__call = function(self, ...)
@@ -39,12 +41,30 @@ function Queue.new(name)
 end
 --]]
 
+local function comparePriority(task1, task2)
+	if task1.Priority < task2.Priority then
+		return true
+	end
+	return false;
+end
+
 function Queue:enqueue(value)
-	--self.MyList:PushRight(value)
 	local last = self.last + 1
 	self.last = last
 	self[last] = value
+	return value
+end
 
+function Queue:myenqueue(value)
+	if self.last == 1 then
+		print("length ", #self)
+		local last = self.last + 1
+		self.last = last
+		self[last] = value
+	else
+		tabutils.binsert(self, value, comparePriority)
+		self.last = self.last + 1
+	end
 	return value
 end
 
